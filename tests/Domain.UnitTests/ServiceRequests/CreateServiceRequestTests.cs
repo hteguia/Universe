@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Domain.Contrats;
+using Domain.Contracts;
 using Domain.DocumentTemplates;
 using Domain.DocumentTypes;
 using Domain.DocumentTypes.Models;

@@ -1,5 +1,6 @@
-﻿using Domain.Contrats;
+﻿using Domain.Contracts;
 using Domain.DocumentTemplates.Models;
+using Domain.Exceptions;
 using Domain.Interfaces;
 
 namespace Domain.DocumentTemplates.Features;

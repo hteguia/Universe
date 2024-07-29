@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Domain.Contrats;
+using Domain.Contracts;
 using Domain.DocumentTemplates;
 using Domain.DocumentTemplates.Features;
 using Domain.DocumentTemplates.Models;
@@ -7,6 +7,7 @@ using Domain.DocumentTypes;
 using Domain.Interfaces;
 using FluentAssertions;
 using Moq;
+using System.IO.Abstractions.TestingHelpers;
 
 namespace Domain.UnitTests.DocumentTemplates;
 
@@ -16,7 +17,7 @@ public class CreateDocumentTemplateTests
     private Mock<IUnitOfWork> _unitOfWorkMock;
     private Mock<IDocumentTemplateRepository> _documentTemplateRepositoryMock;
     private Mock<IFileRepository> _fileRepositoryMock;
-    
+    private readonly MockFileSystem fileSystem;
 
     public CreateDocumentTemplateTests()
     {

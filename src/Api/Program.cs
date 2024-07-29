@@ -1,3 +1,6 @@
+using System.Reflection;
+using Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,13 +10,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services
+    .AddDatabase(builder.Configuration)
+    .AddUnitOfWork();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.DefaultModelExpandDepth(-1);
+    });
 }
 
 app.UseHttpsRedirection();
@@ -23,3 +35,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

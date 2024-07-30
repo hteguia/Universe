@@ -1,4 +1,5 @@
-﻿using Domain.DocumentTypes.Models;
+﻿using Domain.DocumentTemplates.Models;
+using Domain.DocumentTypes.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
@@ -10,4 +11,5 @@ public class DatabaseContext : DbContext
     }
     
     public DbSet<DocumentType> DocumentTypes { get; set; }
+    public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
 }

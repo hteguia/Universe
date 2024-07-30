@@ -1,5 +1,8 @@
+using System.IO.Abstractions;
 using System.Reflection;
 using Api.Extensions;
+using Domain.Contracts;
+using Infrastructure.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,9 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services
     .AddDatabase(builder.Configuration)
     .AddUnitOfWork();
+
+builder.Services.AddScoped<IFileSystem, FileSystem>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 
 var app = builder.Build();
 

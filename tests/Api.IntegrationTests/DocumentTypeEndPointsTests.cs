@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.Json;
 using Api.Controllers.Models;
 using Api.IntegrationTests.Utilities;
-using Domain.DocumentTypes.Models;
 using FluentAssertions;
 
 namespace Api.IntegrationTests;
@@ -16,9 +15,15 @@ public class DocumentTypeEndPointsTests
         // Arrange
         using var factory = new WebFactory();
         var client = factory.CreateClient();
-        var documentType = new DocumentType("Facture", "Document de facturation");
+        const string name = "Test Document Type";
+        const string description = "Test Document Type Description";
+        var requestModel = new AddDocumentTypeRequest()
+        {
+            Name = name,
+            Description = description
+        };
         
-        var content = new StringContent(JsonSerializer.Serialize(documentType), Encoding.UTF8, "application/json");
+        var content = new StringContent(JsonSerializer.Serialize(requestModel), Encoding.UTF8, "application/json");
 
         // Act
         var response = await client.PostAsync("/DocumentType", content);
@@ -28,7 +33,7 @@ public class DocumentTypeEndPointsTests
         var documentTypeResponse = await response.Content.ReadFromJsonAsync<AddDocumentTypeResponse>();
         documentTypeResponse.Should().NotBeNull();
         documentTypeResponse.Id.Should().BeGreaterThan(0);
-        documentTypeResponse.Name.Should().Be(documentType.Name);
-        documentTypeResponse.Description.Should().Be(documentType.Description);
+        documentTypeResponse.Name.Should().Be(name);
+        documentTypeResponse.Description.Should().Be(description);
     }
 }

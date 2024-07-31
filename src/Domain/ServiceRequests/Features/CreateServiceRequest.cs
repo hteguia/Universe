@@ -2,6 +2,7 @@
 using Domain.DocumentTemplates;
 using Domain.DocumentTypes.Models;
 using Domain.Interfaces;
+using Domain.ServiceRequests.Enums;
 using Domain.ServiceRequests.Models;
 
 namespace Domain.ServiceRequests.Features;
@@ -16,6 +17,8 @@ public class CreateServiceRequest(IUnitOfWork unitOfWorkMock, IFileRepository fi
         var documentType = await documentTypeRepository.GetByIdAsync(documentTypeId);
         var path = fileRepository.SaveFile(name, fileContent);
         var serviceRequest = new ServiceRequest(path, deadLine, documentType);
+        var serviceRequestStatus = new ServiceRequestStatus(serviceRequest, Status.ACTIF);
+        serviceRequest.ServiceRequestStatuses.Add(serviceRequestStatus);
 
         await repository.AddAsync(serviceRequest);
         await unitOfWorkMock.SaveChangesAsync();

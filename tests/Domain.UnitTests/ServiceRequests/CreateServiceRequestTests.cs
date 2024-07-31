@@ -5,6 +5,7 @@ using Domain.DocumentTypes;
 using Domain.DocumentTypes.Models;
 using Domain.Interfaces;
 using Domain.ServiceRequests;
+using Domain.ServiceRequests.Enums;
 using Domain.ServiceRequests.Features;
 using Domain.ServiceRequests.Models;
 using FluentAssertions;
@@ -50,5 +51,7 @@ public class CreateServiceRequestTests
         serviceRequest.Path.Should().Be(path);
         serviceRequest.DeadLine.Should().Be(deadLine);
         serviceRequest.DocumentType.Should().NotBeNull();
+        serviceRequest.CreateAt.Should().NotBe(default);
+        serviceRequest.ServiceRequestStatuses.First().Status.Should().Be(Status.ACTIF);
     } 
 }

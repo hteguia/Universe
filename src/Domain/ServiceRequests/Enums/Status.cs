@@ -2,5 +2,6 @@
 
 public enum Status
 {
-    ACTIF
+    ACTIF,
+    WAITING_FOR_TREATMENT
 }

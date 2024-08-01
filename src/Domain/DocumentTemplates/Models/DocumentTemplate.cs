@@ -1,4 +1,5 @@
-﻿using Domain.Base;
+﻿using System.Runtime.CompilerServices;
+using Domain.Base;
 
 namespace Domain.DocumentTemplates.Models;
 
@@ -12,6 +13,17 @@ public class DocumentTemplate : BaseEntity
         
     }
     
+    public DocumentTemplate(long id, string name, string path) : this()
+    {
+        this.Id = id;
+        this.Update(name, path);
+    }
+
+    public DocumentTemplate(string name) : this()
+    {
+        this.Name = name;
+    }
+    
     public DocumentTemplate(string name, string path) : this()
     {
         this.Update(name, path);
@@ -20,6 +32,11 @@ public class DocumentTemplate : BaseEntity
     public void Update(string name, string path)
     {
         this.Name = name;
+        this.Path = path;
+    }
+    
+    public void UpdatePath(string path)
+    {
         this.Path = path;
     }
 }

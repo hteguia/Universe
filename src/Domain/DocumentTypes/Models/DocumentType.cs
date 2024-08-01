@@ -12,6 +12,12 @@ public class DocumentType : BaseEntity
         
     }
     
+    public DocumentType(long id, string name, string description) : this()
+    {
+        this.Id = id;
+        this.Update(name, description);
+    }
+    
     public DocumentType(string name, string description) : this()
     {
         this.Update(name, description);

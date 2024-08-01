@@ -5,5 +5,5 @@ namespace Domain.DocumentTemplates;
 
 public interface IDocumentTemplateRepository : IAsyncRepository<DocumentTemplate>
 {
-    
+    Task<DocumentTemplate> GetByNameAsync(string name);
 }

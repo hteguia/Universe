@@ -10,9 +10,9 @@ namespace Domain.UnitTests.DocumentTypes;
 
 public class CreateDocumentTypeTests
 {
-    private CreateDocumentType _createDocumentType;
-    private Mock<IUnitOfWork> _unitOfWorkMock;
-    private Mock<IDocumentTypeRepository> _documentRepositoryMock;
+    private readonly CreateDocumentType _createDocumentType;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IDocumentTypeRepository> _documentRepositoryMock;
     
     public CreateDocumentTypeTests()
     {
@@ -23,38 +23,63 @@ public class CreateDocumentTypeTests
     }
     
     [Fact]
-    public async void execute_mustCreateDocumentTypeProperly()
+    public async void execute_shouldCreateDocumentTypeProperly()
     {
+        //Arrange
         const string name = "Analyse de donnée";
         const string description = "Description analyse de donnée";
         
+        //Act
         var documentType = await _createDocumentType.Create(name, description);
 
+        //Assert
         _unitOfWorkMock.Verify(p => p.SaveChangesAsync(), Times.Once);
         _documentRepositoryMock.Verify(p=>p.AddAsync(It.IsAny<DocumentType>()), Times.Once);
+        
+        documentType.Should().NotBeNull();
         documentType.Name.Should().Be(name);
         documentType.Description.Should().Be(description);
     }
-
+    
     [Fact]
-    public async  void execute_mustThrowsValidationException_IfNameEmpty()
+    public async void execute_shouldThrowValidationException_WhenNameIsExist()
     {
-        const string name = "";
+        //Arrange
+        const string name = "Analyse de donnée";
         const string description = "Description analyse de donnée";
         
+        _documentRepositoryMock.Setup(p => p.GetByNameAsync("Analyse de donnée")).ReturnsAsync(new DocumentType(1, "Analyse de donnée", "Description analyse de donnée"));
+        
+        //Act
         var act = async () => { await _createDocumentType.Create(name, description); };
         
+        //Assert
+        await act.Should().ThrowAsync<ValidationException>();
+    }
+
+    [Fact]
+    public async  void execute_shouldThrowValidationException_WhenNameIsEmpty()
+    {
+        //Arrange
+        const string description = "Description analyse de donnée";
+        
+        //Act
+        var act = async () => { await _createDocumentType.Create(string.Empty, description); };
+        
+        //Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
     
     [Fact]
-    public async  void execute_mustThrowsValidationException_IfDescriptionEmpty()
+    public async  void execute_shouldThrowValidationException_WhenDescriptionIsEmpty()
     {
+        //Arrange
         const string name = "Analyse de donnée";
-        const string description = "";
         
-        var act = async () => { await _createDocumentType.Create(name, description); };
+        //Act
+        var act = async () => { await _createDocumentType.Create(name, string.Empty); };
         
+        //Assert
         await act.Should().ThrowAsync<ValidationException>();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Domain.Contracts;
-using Domain.DocumentTemplates;
 using Domain.DocumentTypes;
 using Domain.DocumentTypes.Models;
 using Domain.Interfaces;
@@ -11,47 +10,127 @@ using Domain.ServiceRequests.Models;
 using FluentAssertions;
 using Moq;
 
-namespace Domain.UnitTests.ServiceRequest;
+namespace Domain.UnitTests.ServiceRequests;
 
 public class CreateServiceRequestTests
 {
-    private CreateServiceRequest _createServiceRequest;
-    private Mock<IUnitOfWork> _unitOfWorkMock;
-    private Mock<IServiceRequestRepository> _ServiceRequestRepositoryMock;
-    private Mock<IFileRepository> _fileRepositoryMock;
-    private Mock<IDocumentTypeRepository> _documentRepositoryMock;
+    private readonly CreateServiceRequest _createServiceRequest;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IServiceRequestRepository> _serviceRequestRepositoryMock;
+    private readonly Mock<IFileRepository> _fileRepositoryMock;
+    private readonly Mock<IDocumentTypeRepository> _documentRepositoryMock;
     
     public CreateServiceRequestTests()
     {
         _fileRepositoryMock = new Mock<IFileRepository>();
-        _ServiceRequestRepositoryMock = new Mock<IServiceRequestRepository>();
+        _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _documentRepositoryMock = new Mock<IDocumentTypeRepository>();
+        
+        _unitOfWorkMock.Setup(p => p.AsyncRepository<ServiceRequest>()).Returns(_serviceRequestRepositoryMock.Object);
+        _unitOfWorkMock.Setup(p => p.AsyncRepository<DocumentType>()).Returns(_documentRepositoryMock.Object);
+        
+        _createServiceRequest = new CreateServiceRequest(_unitOfWorkMock.Object, _fileRepositoryMock.Object);
     }
 
     [Fact]
-    public async void execute_mustCreateDocumentTypeProperly()
+    public async void execute_shouldCreateServiceRequestProperly()
     {
-        const string path = @"c:\myfile.txt";
+        //Arrange
         const string name = "Document de thèse.pdf";
-        const string strContent = "content";
-        const string deadLine = "";
+        const string deadLine = "7 Jours";
         const long documentTypeId = 1;
-        byte[] fileContent = Encoding.UTF8.GetBytes(strContent);
+        var fileContent = Encoding.UTF8.GetBytes("content");
 
-        _fileRepositoryMock.Setup(p => p.SaveFile(It.IsAny<string>(), It.IsAny<byte[]>())).Returns(path);
-        _unitOfWorkMock.Setup(p => p.AsyncRepository<ServiceRequests.Models.ServiceRequest>())
-            .Returns(_ServiceRequestRepositoryMock.Object);
-        _unitOfWorkMock.Setup(p => p.AsyncRepository<DocumentType>()).Returns(_documentRepositoryMock.Object);
-        _documentRepositoryMock.Setup(p => p.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(new DocumentType());
+        _fileRepositoryMock.Setup(p => p.SaveFile(It.IsAny<string>(), It.IsAny<byte[]>())).Returns(@"C:\Document de thèse.pdf");
+        _documentRepositoryMock.Setup(p => p.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(new DocumentType(1,"Document de thèse", "Description"));
         
-        _createServiceRequest = new CreateServiceRequest(_unitOfWorkMock.Object, _fileRepositoryMock.Object);
-        ServiceRequests.Models.ServiceRequest serviceRequest = await _createServiceRequest.Create(name, fileContent, deadLine, documentTypeId);
-
-        serviceRequest.Path.Should().Be(path);
+        //Act
+        var serviceRequest = await _createServiceRequest.Create(name, fileContent, deadLine, documentTypeId);
+        
+        //Assert
+        _unitOfWorkMock.Verify(p => p.SaveChangesAsync(), Times.Once);
+        _serviceRequestRepositoryMock.Verify(p=>p.AddAsync(It.IsAny<ServiceRequest>()), Times.Once);
+        
+        serviceRequest.Should().NotBeNull();
+        serviceRequest.ServiceRequestStatuses.Should().NotBeNullOrEmpty();
+        serviceRequest.DocumentTypeId.Should().Be(1);
+        serviceRequest.ServiceRequestStatuses.First().Status.Should().Be(Status.WAITING_FOR_TREATMENT);
         serviceRequest.DeadLine.Should().Be(deadLine);
-        serviceRequest.DocumentType.Should().NotBeNull();
-        serviceRequest.CreateAt.Should().NotBe(default);
-        serviceRequest.ServiceRequestStatuses.First().Status.Should().Be(Status.ACTIF);
-    } 
+        serviceRequest.CreateAt.Should().NotBe(default); 
+        serviceRequest.Path.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async void execute_shouldThrowValidationException_WhenNameIsEmpty()
+    {
+        //Arrange
+        const string name = "Document de thèse.pdf";
+        const string deadLine = "7 Jours";
+        const long documentTypeId = 1;
+        var fileContent = Encoding.UTF8.GetBytes("content");
+        
+        _documentRepositoryMock.Setup(p => p.GetByIdAsync(1)).ReturnsAsync(new DocumentType(1, "Analyse de donnée", "Description analyse de donnée"));
+        
+        //Act
+        var act = async () => { await _createServiceRequest.Create(string.Empty, fileContent, deadLine, documentTypeId); };
+        
+        //Assert
+        await act.Should().ThrowAsync<Domain.Exceptions.ValidationException>();
+    }
+
+    [Fact]
+    public async void execute_shouldThrowValidationException_WhenNameIsNotValid()
+    {
+        //Arrange
+        const string name = "Document de thèse";
+        const string deadLine = "7 Jours";
+        
+        const long documentTypeId = 1;
+        var fileContent = Encoding.UTF8.GetBytes("content");
+        
+        _documentRepositoryMock.Setup(p => p.GetByIdAsync(1)).ReturnsAsync(new DocumentType(1, "Analyse de donnée", "Description analyse de donnée"));
+        
+        //Act
+        var act = async () => { await _createServiceRequest.Create(name, fileContent, deadLine, documentTypeId); };
+        
+        //Assert
+        await act.Should().ThrowAsync<Domain.Exceptions.ValidationException>();
+    }
+
+    [Fact]
+    public async void execute_shouldThrowValidationException_WhenDeadLineIsEmpty()
+    {
+        //Arrange
+        const string name = "Document de thèse.pdf";
+        const string deadLine = "7 Jours";
+        const long documentTypeId = 1;
+        var fileContent = Encoding.UTF8.GetBytes("content");
+        
+        _documentRepositoryMock.Setup(p => p.GetByIdAsync(1)).ReturnsAsync(new DocumentType(1, "Analyse de donnée", "Description analyse de donnée"));
+        
+        //Act
+        var act = async () => { await _createServiceRequest.Create(name, fileContent, string.Empty, documentTypeId); };
+        
+        //Assert
+        await act.Should().ThrowAsync<Domain.Exceptions.ValidationException>();
+    }
+    
+    [Fact]
+    public async void execute_shouldThrowValidationException_WhenDocumentTypeNotExist()
+    {
+        //Arrange
+        const string name = "Document de thèse.pdf";
+        const string deadLine = "7 Jours";
+        const long documentTypeId = 1;
+        var fileContent = Encoding.UTF8.GetBytes("content");
+        
+        _documentRepositoryMock.Setup(p => p.GetByIdAsync(It.IsAny<long>())).ReturnsAsync((DocumentType?)null);
+        
+        //Act
+        var act = async () => { await _createServiceRequest.Create(name, fileContent, deadLine, documentTypeId); };
+        
+        //Assert
+        await act.Should().ThrowAsync<Domain.Exceptions.ValidationException>();
+    }
 }

@@ -1,5 +1,6 @@
-﻿using Domain.DocumentTypes.Models;
-using Domain.DocumentTypes.Validations;
+﻿using Domain.DocumentTemplates;
+using Domain.DocumentTypes.Models;
+using Domain.DocumentTypes.Validators;
 using Domain.Exceptions;
 using Domain.Interfaces;
 
@@ -10,11 +11,9 @@ public class CreateDocumentType(IUnitOfWork unitOfWork)
     public async Task<DocumentType> Create(string name, string description)
     {
         var repository = unitOfWork.AsyncRepository<DocumentType>();
-
         var documentType = new DocumentType(name, description);
-        
-        DocumentValidator validator = new DocumentValidator();
-        var validationResut = await validator.ValidateAsync(documentType);
+        DocumentTypeValidator typeValidator = new DocumentTypeValidator(repository as IDocumentTypeRepository);
+        var validationResut = await typeValidator.ValidateAsync(documentType);
         if (validationResut.Errors.Count > 0)
         {
             throw new ValidationException(validationResut);

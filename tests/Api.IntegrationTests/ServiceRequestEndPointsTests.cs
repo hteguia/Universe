@@ -2,7 +2,8 @@
 using System.Text;
 using Api.IntegrationTests.Utilities;
 using Api.ServiceRequests.Models;
-using Domain.ServiceRequests.Features;
+using Domain.Features.ServiceRequests.UseCases;
+
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;

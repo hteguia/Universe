@@ -2,7 +2,12 @@ using System.IO.Abstractions;
 using System.Reflection;
 using Api.Extensions;
 using Domain.Contracts;
+using Domain.Features.DocumentTemplates.Repositories;
+using Domain.Features.DocumentTypes.Repositories;
+using Domain.Interfaces;
+using Domain.Interfaces.Repositories.Base;
 using Infrastructure.Contracts;
+using Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +26,9 @@ builder.Services
 
 builder.Services.AddScoped<IFileSystem, FileSystem>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
+builder.Services.AddScoped<IDocumentTemplateRepository, DocumentTemplateRepository>();
+builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
 
 var app = builder.Build();
 

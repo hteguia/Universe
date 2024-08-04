@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using Api.Controllers.Models;
+using Api.DocumentTypes.Models;
 using Api.IntegrationTests.Utilities;
 using FluentAssertions;
 

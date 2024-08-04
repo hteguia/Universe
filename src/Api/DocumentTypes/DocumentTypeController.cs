@@ -1,10 +1,11 @@
-﻿using Api.Controllers.Models;
+﻿using Api.DocumentTypes.Models;
 using AutoMapper;
-using Domain.DocumentTypes.Features;
+using Domain.Features.DocumentTypes.UseCases;
 using Domain.Interfaces;
+using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Api.DocumentTypes;
 
 [ApiController]
 [Route("[controller]")]

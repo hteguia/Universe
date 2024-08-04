@@ -16,7 +16,7 @@ public class DocumentTemplateEndPointsTests
         using var webFactory = new WebFactory();
         var client = webFactory.CreateClient();
 
-        const string name = "Test Document Template";
+        const string name = "Test Document Template.pdf";
         var file = GetMockFormFile().Object;
 
         using var content = new MultipartFormDataContent

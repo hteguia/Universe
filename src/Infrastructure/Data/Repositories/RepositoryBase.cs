@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
+using Domain.Interfaces.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories;
 
-public class RepositoryBase<T> : Domain.Interfaces.IAsyncRepository<T> where T : class
+public class RepositoryBase<T> : IAsyncRepository<T> where T : class
 {
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> _dbSet;
 
     public RepositoryBase(DatabaseContext dbContext)
     {

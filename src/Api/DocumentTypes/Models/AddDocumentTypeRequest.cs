@@ -1,4 +1,4 @@
-﻿namespace Api.Controllers.Models;
+﻿namespace Api.DocumentTypes.Models;
 
 public record AddDocumentTypeRequest
 {

@@ -1,9 +1,10 @@
 ﻿using Api.DocumentTemplates.Models;
 using AutoMapper;
 using Domain.Contracts;
-using Domain.DocumentTemplates.Features;
-using Domain.DocumentTypes.Features;
+using Domain.Features.DocumentTemplates.Models;
+using Domain.Features.DocumentTemplates.UseCases;
 using Domain.Interfaces;
+using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.DocumentTemplates;
@@ -25,7 +26,11 @@ public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileRepository 
             await model.Content.CopyToAsync(memoryStream);
             fileContent = memoryStream.ToArray();
         }
-        var result = await _createDocumentTemplate.Create(model.Name, fileContent);
+        var result = await _createDocumentTemplate.Create(new CreateDocumentTemplateModel()
+        {
+            Name = model.Name,
+            FileContent = fileContent
+        });
         var response = mapper.Map<AddDocumentTemplateResponse>(result);
         return Ok(response);
     }

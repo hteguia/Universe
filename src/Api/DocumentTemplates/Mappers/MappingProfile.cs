@@ -1,5 +1,6 @@
 ﻿using Api.DocumentTemplates.Models;
 using AutoMapper;
+using Domain.Features.DocumentTemplates.Repositories;
 
 namespace Api.DocumentTemplates.Mappers;
 
@@ -7,6 +8,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Domain.DocumentTemplates.Models.DocumentTemplate, AddDocumentTemplateResponse>();
+        CreateMap<DocumentTemplate, AddDocumentTemplateResponse>();
     }
 }

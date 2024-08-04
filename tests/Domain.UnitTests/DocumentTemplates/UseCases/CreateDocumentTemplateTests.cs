@@ -84,7 +84,7 @@ public class CreateDocumentTemplateTests
         var act = async () => { await _createDocumentTemplate.Create(new CreateDocumentTemplateModel()
         {
             Name = name,
-            FileContent = new byte[0]
+            FileContent = Array.Empty<byte>()
         }); };
         
         //Assert

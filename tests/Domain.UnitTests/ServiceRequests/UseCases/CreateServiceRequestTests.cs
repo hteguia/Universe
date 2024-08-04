@@ -66,7 +66,6 @@ public class CreateServiceRequestTests
     public async void execute_shouldThrowValidationException_WhenNameIsEmpty()
     {
         //Arrange
-        const string name = "Document de thèse.pdf";
         const string deadLine = "7 Jours";
         const long documentTypeId = 1;
         var fileContent = Encoding.UTF8.GetBytes("content");
@@ -104,7 +103,6 @@ public class CreateServiceRequestTests
     {
         //Arrange
         const string name = "Document de thèse.pdf";
-        const string deadLine = "7 Jours";
         const long documentTypeId = 1;
         var fileContent = Encoding.UTF8.GetBytes("content");
         

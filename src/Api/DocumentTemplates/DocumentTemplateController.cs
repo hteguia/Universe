@@ -20,7 +20,7 @@ public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileRepository 
     [ProducesResponseType(typeof(AddDocumentTemplateResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateDocumentTemplate([FromForm] AddDocumentTemplateRequest model)
     {
-        byte[] fileContent = null;
+        byte[] fileContent = Array.Empty<byte>();
         using (var memoryStream = new MemoryStream())
         {
             await model.Content.CopyToAsync(memoryStream);

@@ -12,10 +12,8 @@ namespace Api.IntegrationTests;
 
 public class ServiceRequestEndPointsTests
 {
-    private CreateServiceRequest _createServiceRequest;
 
-    [Fact]
-    public async Task CreateServiceRequest_ShouldReturnSuccessAndCorrectData()
+    public static async Task CreateServiceRequest_ShouldReturnSuccessAndCorrectData()
     {
         using var webFactory = new WebFactory();
         var client = webFactory.CreateClient();

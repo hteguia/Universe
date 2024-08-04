@@ -4,5 +4,5 @@ namespace Domain.Features.DocumentTypes.Repositories;
 
 public interface IDocumentTypeRepository : IAsyncRepository<DocumentType>
 {
-    public Task<DocumentType?> GetByNameAsync(string name);
+    public Task<DocumentType> GetByNameAsync(string name);
 }

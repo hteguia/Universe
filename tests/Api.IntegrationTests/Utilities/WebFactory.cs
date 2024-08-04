@@ -14,7 +14,10 @@ public class WebFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             var oldDatabaseContext = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DatabaseContext>));
-            services.Remove(oldDatabaseContext);
+            if(oldDatabaseContext != null)
+            {
+                services.Remove(oldDatabaseContext);
+            }
             services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("InMemoryDbForTesting"));
         });
     }

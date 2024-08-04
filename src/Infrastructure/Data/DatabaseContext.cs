@@ -10,6 +10,6 @@ public class DatabaseContext : DbContext
     {
     }
     
-    public DbSet<DocumentType?> DocumentTypes { get; set; }
+    public DbSet<DocumentType> DocumentTypes { get; set; }
     public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
 }

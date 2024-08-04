@@ -11,7 +11,7 @@ public class DocumentTypeRepository : RepositoryBase<DocumentType>, IDocumentTyp
         _dbContext = dbContext;
     }
 
-    public async Task<DocumentType?> GetByNameAsync(string name)
+    public async Task<DocumentType> GetByNameAsync(string name)
     {
         return  await _dbContext.DocumentTypes.FirstOrDefaultAsync(x =>   x.Name == name);
     }

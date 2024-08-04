@@ -1,24 +1,18 @@
 ﻿namespace Domain.Base;
 
-public class FileContentValueObject : IEquatable<FileContentValueObject>
+public sealed class FileContentValueObject(string name, byte[] content) : IEquatable<FileContentValueObject>
 {
-    public string Name { get; }
-    public byte[] Content { get; }
+    public string Name { get; } = name;
+    public byte[] Content { get; } = content;
 
-    public FileContentValueObject(string name, byte[] content)
-    {
-        Name = name;
-        Content = content;
-    }
-
-    public bool Equals(FileContentValueObject? other)
+    public bool Equals(FileContentValueObject other)
     {
         if (other == null) return false;
         
         return Name == other.Name && Content.SequenceEqual(other.Content);
     }
     
-    public override bool Equals(object? obj)
+    public override bool Equals(object obj)
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;

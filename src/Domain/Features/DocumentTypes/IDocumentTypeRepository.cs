@@ -1,6 +1,7 @@
-﻿using Domain.Interfaces.Repositories.Base;
+﻿using Domain.Features.DocumentTypes.Entities;
+using Domain.Interfaces.Repositories.Base;
 
-namespace Domain.Features.DocumentTypes.Repositories;
+namespace Domain.Features.DocumentTypes;
 
 public interface IDocumentTypeRepository : IAsyncRepository<DocumentType>
 {

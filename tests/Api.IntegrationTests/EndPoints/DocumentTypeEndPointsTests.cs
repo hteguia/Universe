@@ -5,7 +5,7 @@ using Api.DocumentTypes.Models;
 using Api.IntegrationTests.Utilities;
 using FluentAssertions;
 
-namespace Api.IntegrationTests;
+namespace Api.IntegrationTests.EndPoints;
 
 public class DocumentTypeEndPointsTests
 {
@@ -22,7 +22,7 @@ public class DocumentTypeEndPointsTests
             Name = name,
             Description = description
         };
-        
+
         var content = new StringContent(JsonSerializer.Serialize(requestModel), Encoding.UTF8, "application/json");
 
         // Act

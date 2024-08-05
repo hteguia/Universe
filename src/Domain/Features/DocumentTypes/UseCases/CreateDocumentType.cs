@@ -1,5 +1,5 @@
 ﻿using Domain.Exceptions;
-using Domain.Features.DocumentTypes.Repositories;
+using Domain.Features.DocumentTypes.Entities;
 using Domain.Features.DocumentTypes.Validators;
 using Domain.Interfaces.Repositories.Base;
 

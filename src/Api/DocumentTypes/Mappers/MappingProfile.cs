@@ -1,6 +1,6 @@
 ﻿using Api.DocumentTypes.Models;
 using AutoMapper;
-using Domain.Features.DocumentTypes.Repositories;
+using Domain.Features.DocumentTypes.Entities;
 
 namespace Api.DocumentTypes.Mappers;
 

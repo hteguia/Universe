@@ -1,6 +1,6 @@
 ﻿using Api.DocumentTemplates.Models;
 using AutoMapper;
-using Domain.Features.DocumentTemplates.Repositories;
+using Domain.Features.DocumentTemplates.Entities;
 
 namespace Api.DocumentTemplates.Mappers;
 

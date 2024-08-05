@@ -1,5 +1,5 @@
-﻿using Domain.Features.DocumentTemplates.Repositories;
-using Domain.Features.DocumentTypes.Repositories;
+﻿using Domain.Features.DocumentTemplates;
+using Domain.Features.DocumentTypes;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories.Base;
 using Infrastructure.Data.Repositories;

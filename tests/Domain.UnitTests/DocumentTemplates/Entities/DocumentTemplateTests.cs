@@ -1,7 +1,7 @@
-﻿using Domain.Features.DocumentTemplates.Repositories;
+﻿using Domain.Features.DocumentTemplates.Entities;
 using FluentAssertions;
 
-namespace Domain.UnitTests.DocumentTemplates.Repositories;
+namespace Domain.UnitTests.DocumentTemplates.Entities;
 
 public class DocumentTemplateTests
 {

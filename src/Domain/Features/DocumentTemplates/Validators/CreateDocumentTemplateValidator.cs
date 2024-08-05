@@ -1,5 +1,4 @@
 ﻿using Domain.Features.DocumentTemplates.Models;
-using Domain.Features.DocumentTemplates.Repositories;
 using FluentValidation;
 
 namespace Domain.Features.DocumentTemplates.Validators;

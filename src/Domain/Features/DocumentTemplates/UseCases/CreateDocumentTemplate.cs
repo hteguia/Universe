@@ -1,6 +1,6 @@
 ﻿using Domain.Contracts;
+using Domain.Features.DocumentTemplates.Entities;
 using Domain.Features.DocumentTemplates.Models;
-using Domain.Features.DocumentTemplates.Repositories;
 using Domain.Features.DocumentTemplates.Validators;
 using Domain.Interfaces.Repositories.Base;
 

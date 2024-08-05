@@ -1,4 +1,5 @@
-﻿using Domain.Features.DocumentTypes.Repositories;
+﻿using Domain.Features.DocumentTypes;
+using Domain.Features.DocumentTypes.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories;

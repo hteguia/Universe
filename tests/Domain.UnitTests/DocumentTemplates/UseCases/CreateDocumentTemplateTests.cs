@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Domain.Contracts;
+using Domain.Features.DocumentTemplates;
+using Domain.Features.DocumentTemplates.Entities;
 using Domain.Features.DocumentTemplates.Models;
-using Domain.Features.DocumentTemplates.Repositories;
 using Domain.Features.DocumentTemplates.UseCases;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories.Base;
@@ -55,7 +56,7 @@ public class CreateDocumentTemplateTests
     
     
     [Fact]
-    public void execute_shouldThrowValidationException_WhenNameIsExist()
+    public void CreateDocumentTemplate_ShouldThrowValidationException_WhenNameIsExist()
     {
         //Arrange
         const string name = "Analyse de donnée.pdf";
@@ -75,7 +76,7 @@ public class CreateDocumentTemplateTests
     }
     
     [Fact]
-    public void excute_shouldThrowValidationException_WhenFileContentIsEmpty()
+    public void CreateDocumentTemplate_ShouldThrowValidationException_WhenFileContentIsEmpty()
     {
         //Arrange
         const string name = "Analyse de donnée.pdf";

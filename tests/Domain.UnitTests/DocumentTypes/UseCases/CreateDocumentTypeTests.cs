@@ -1,5 +1,6 @@
 ﻿using Domain.Exceptions;
-using Domain.Features.DocumentTypes.Repositories;
+using Domain.Features.DocumentTypes;
+using Domain.Features.DocumentTypes.Entities;
 using Domain.Features.DocumentTypes.UseCases;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories.Base;

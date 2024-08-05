@@ -1,7 +1,7 @@
-﻿using Domain.Features.DocumentTypes.Repositories;
+﻿using Domain.Features.DocumentTypes.Entities;
 using FluentAssertions;
 
-namespace Domain.UnitTests.DocumentTypes.Repositories;
+namespace Domain.UnitTests.DocumentTypes.Entities;
 
 public class DocumentTypeTests
 {

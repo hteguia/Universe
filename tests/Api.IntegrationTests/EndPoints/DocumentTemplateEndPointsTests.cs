@@ -1,44 +1,39 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
+using Api.DocumentTemplates.Models;
 using Api.IntegrationTests.Utilities;
-using Api.ServiceRequests.Models;
-using Domain.Features.ServiceRequests.UseCases;
-
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace Api.IntegrationTests;
+namespace Api.IntegrationTests.EndPoints;
 
-public class ServiceRequestEndPointsTests
+public class DocumentTemplateEndPointsTests
 {
-
-    public static async Task CreateServiceRequest_ShouldReturnSuccessAndCorrectData()
+    [Fact]
+    public async Task CreateDocumentTemplate_ShouldReturnSuccessAndCorrectData()
     {
         using var webFactory = new WebFactory();
         var client = webFactory.CreateClient();
-        
-        const string name = "Test Service Request";
-        
+
+        const string name = "Test Document Template.pdf";
         var file = GetMockFormFile().Object;
-        
+
         using var content = new MultipartFormDataContent
         {
-            { new StringContent(name), "Name" },
-            { new StringContent("7 Jours"), "DeadLine" },
-            { new StringContent("1"), "DocumentTypeId" } 
+            { new StringContent(name), "Name" }
         };
         var fileContent = new StreamContent(file.OpenReadStream());
         fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("multipart/form-data");
         content.Add(fileContent, "Content", file.FileName);
-        
-        var response = await client.PostAsync("/ServiceRequest", content);
-        
+
+        var response = await client.PostAsync("/DocumentTemplate", content);
+
         response.EnsureSuccessStatusCode();
-        var serviceRequestResponse = await response.Content.ReadFromJsonAsync<AddServiceRequestResponse>();
-        serviceRequestResponse.Should().NotBeNull();
+        var documentTemplateResponse = await response.Content.ReadFromJsonAsync<AddDocumentTemplateResponse>();
+        documentTemplateResponse.Should().NotBeNull();
     }
-    
+
     private static Mock<IFormFile> GetMockFormFile()
     {
         var fileName = "test.txt";

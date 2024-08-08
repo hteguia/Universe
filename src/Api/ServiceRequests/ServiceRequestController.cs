@@ -1,9 +1,7 @@
-﻿using Api.DocumentTemplates.Models;
-using Api.ServiceRequests.Models;
+﻿using Api.ServiceRequests.Models;
 using AutoMapper;
 using Domain.Contracts;
-using Domain.Features.ServiceRequests.Models;
-using Domain.Features.ServiceRequests.UseCases;
+using Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
 using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +12,7 @@ namespace Api.ServiceRequests;
 public class ServiceRequestController(IUnitOfWork unitOfWork, IFileRepository fileRepository, IMapper mapper) : ControllerBase
 {
 
-    private readonly CreateServiceRequest _createServiceRequest = new(unitOfWork, fileRepository);
+    private readonly CreateServiceRequestUseCase _createServiceRequestUseCase = new(unitOfWork, fileRepository);
 
     [HttpPost(Name = "CreateServiceRequest")]
     [Consumes("multipart/form-data")]
@@ -27,13 +25,7 @@ public class ServiceRequestController(IUnitOfWork unitOfWork, IFileRepository fi
             await model.Content.CopyToAsync(memoryStream);
             fileContent = memoryStream.ToArray();
         }
-        var result = await _createServiceRequest.Create(new CreateServiceRequestVM()
-        {
-            Name = model.Name,
-            DeadLine = model.DeadLine,
-            DocumentTypeId = model.DocumentTypeId,
-            FileContent = fileContent
-        });
+        var result = await _createServiceRequestUseCase.Create(new CreateServiceRequestUseCaseCommand(model.Name, fileContent, model.DeadLine, model.DocumentTypeId));
         var response = mapper.Map<AddServiceRequestResponse>(result);
         return Ok(response);
     }

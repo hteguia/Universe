@@ -3,5 +3,6 @@
 public enum Status
 {
     PENDING,
-    SEND
+    SEND,
+    RESEND
 }

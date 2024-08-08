@@ -1,6 +1,7 @@
 ﻿using Domain.Features.DocumentTemplates;
 using Domain.Features.DocumentTypes;
 using Domain.Interfaces;
+using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Repositories.Base;
 using Infrastructure.Data.Repositories;
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Features.DocumentTemplates.Entities;
-using Domain.Features.DocumentTypes.Entities;
+using Domain.Features.DocumentTypes.Models;
 using Domain.Features.ServiceRequests.Entities;
 using Microsoft.EntityFrameworkCore;
 

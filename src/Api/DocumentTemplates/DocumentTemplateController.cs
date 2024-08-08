@@ -1,9 +1,7 @@
 ﻿using Api.DocumentTemplates.Models;
 using AutoMapper;
 using Domain.Contracts;
-using Domain.Features.DocumentTemplates.Models;
-using Domain.Features.DocumentTemplates.UseCases;
-using Domain.Interfaces;
+using Domain.Features.DocumentTemplates.UseCases.CreateDocumentTemplate;
 using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +11,7 @@ namespace Api.DocumentTemplates;
 [Route("[controller]")]
 public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileRepository fileRepository, IMapper mapper) : ControllerBase
 {
-    private readonly CreateDocumentTemplate _createDocumentTemplate = new(unitOfWork, fileRepository);
+    private readonly CreateDocumentTemplateUseCase _createDocumentTemplateUseCase = new(unitOfWork, fileRepository);
     
     [HttpPost(Name = "CreateDocumentTemplate")]
     [Consumes("multipart/form-data")]
@@ -26,11 +24,7 @@ public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileRepository 
             await model.Content.CopyToAsync(memoryStream);
             fileContent = memoryStream.ToArray();
         }
-        var result = await _createDocumentTemplate.Create(new CreateDocumentTemplateModel()
-        {
-            Name = model.Name,
-            FileContent = fileContent
-        });
+        var result = await _createDocumentTemplateUseCase.Create(new CreateDocumentTemplateUseCaseCommand(model.Name, fileContent));
         var response = mapper.Map<AddDocumentTemplateResponse>(result);
         return Ok(response);
     }

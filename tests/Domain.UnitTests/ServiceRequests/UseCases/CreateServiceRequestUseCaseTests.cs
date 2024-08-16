@@ -1,10 +1,10 @@
 ﻿using System.Text;
-using Domain.Contracts;
 using Domain.Features.DocumentTypes.Models;
 using Domain.Features.ServiceRequests;
 using Domain.Features.ServiceRequests.Entities;
 using Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
 using Domain.Interfaces;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Repositories.Base;
 using Domain.ServiceRequests.Enums;
@@ -18,14 +18,14 @@ public class CreateServiceRequestUseCaseTests
     private readonly CreateServiceRequestUseCase _createServiceRequestUseCase;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IServiceRequestRepository> _serviceRequestRepositoryMock;
-    private readonly Mock<IFileRepository> _fileRepositoryMock;
+    private readonly Mock<IFileProvider> _fileRepositoryMock;
     private readonly Mock<IDocumentTypeRepository> _documentRepositoryMock;
     private readonly Mock<IDateTimeProvider> _dateTimeProviderMock;
     private readonly DateTime CurrentDate = new(2024, 12, 31);
 
     public CreateServiceRequestUseCaseTests()
     {
-        _fileRepositoryMock = new Mock<IFileRepository>();
+        _fileRepositoryMock = new Mock<IFileProvider>();
         _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _documentRepositoryMock = new Mock<IDocumentTypeRepository>();

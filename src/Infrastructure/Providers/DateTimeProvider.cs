@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces;
 
-namespace Infrastructure.Contracts;
+namespace Infrastructure.Providers;
 
 public class DateTimeProvider : IDateTimeProvider
 {

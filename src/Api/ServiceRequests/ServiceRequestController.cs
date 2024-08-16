@@ -1,8 +1,8 @@
 ﻿using Api.ServiceRequests.Models;
 using AutoMapper;
-using Domain.Contracts;
 using Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
 using Domain.Interfaces;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ namespace Api.ServiceRequests;
 
 [ApiController]
 [Route("[controller]")]
-public class ServiceRequestController(IUnitOfWork unitOfWork, IFileRepository fileRepository, IDateTimeProvider dateTimeProvider, IMapper mapper) : ControllerBase
+public class ServiceRequestController(IUnitOfWork unitOfWork, IFileProvider fileRepository, IDateTimeProvider dateTimeProvider, IMapper mapper) : ControllerBase
 {
 
     private readonly CreateServiceRequestUseCase _createServiceRequestUseCase = new(unitOfWork, fileRepository, dateTimeProvider);

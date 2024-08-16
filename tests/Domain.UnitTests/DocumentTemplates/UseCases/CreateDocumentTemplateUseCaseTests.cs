@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using Domain.Contracts;
 using Domain.Features.DocumentTemplates;
 using Domain.Features.DocumentTemplates.Entities;
 using Domain.Features.DocumentTemplates.UseCases.CreateDocumentTemplate;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Repositories.Base;
 using FluentAssertions;
@@ -15,11 +15,11 @@ public class CreateDocumentTemplateUseCaseTests
     private readonly CreateDocumentTemplateUseCase _createDocumentTemplateUseCase;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IDocumentTemplateRepository> _documentTemplateRepositoryMock;
-    private readonly Mock<IFileRepository> _fileRepositoryMock;
+    private readonly Mock<IFileProvider> _fileRepositoryMock;
 
     public CreateDocumentTemplateUseCaseTests()
     {
-        _fileRepositoryMock = new Mock<IFileRepository>();
+        _fileRepositoryMock = new Mock<IFileProvider>();
         _documentTemplateRepositoryMock = new Mock<IDocumentTemplateRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _unitOfWorkMock.Setup(p => p.DocumentTemplateRepository).Returns(_documentTemplateRepositoryMock.Object);

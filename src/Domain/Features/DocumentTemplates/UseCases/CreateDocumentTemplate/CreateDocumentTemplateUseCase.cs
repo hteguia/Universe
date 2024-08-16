@@ -1,10 +1,10 @@
-﻿using Domain.Contracts;
-using Domain.Features.DocumentTemplates.Entities;
+﻿using Domain.Features.DocumentTemplates.Entities;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories.Base;
 
 namespace Domain.Features.DocumentTemplates.UseCases.CreateDocumentTemplate;
 
-public class CreateDocumentTemplateUseCase(IUnitOfWork unitOfWorkMock, IFileRepository fileRepository)
+public class CreateDocumentTemplateUseCase(IUnitOfWork unitOfWorkMock, IFileProvider fileRepository)
 {
     public async Task<DocumentTemplate> Create(CreateDocumentTemplateUseCaseCommand model)
     {

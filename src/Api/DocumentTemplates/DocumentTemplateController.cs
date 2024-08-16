@@ -1,7 +1,7 @@
 ﻿using Api.DocumentTemplates.Models;
 using AutoMapper;
-using Domain.Contracts;
 using Domain.Features.DocumentTemplates.UseCases.CreateDocumentTemplate;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace Api.DocumentTemplates;
 
 [ApiController]
 [Route("[controller]")]
-public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileRepository fileRepository, IMapper mapper) : ControllerBase
+public class DocumentTemplateController(IUnitOfWork unitOfWork, IFileProvider fileRepository, IMapper mapper) : ControllerBase
 {
     private readonly CreateDocumentTemplateUseCase _createDocumentTemplateUseCase = new(unitOfWork, fileRepository);
     

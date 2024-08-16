@@ -1,12 +1,12 @@
-﻿using Domain.Contracts;
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 using Domain.Features.ServiceRequests.Entities;
 using Domain.Interfaces;
+using Domain.Interfaces.Providers;
 using Domain.Interfaces.Repositories.Base;
 
 namespace Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
 
-public class CreateServiceRequestUseCase(IUnitOfWork unitOfWorkMock, IFileRepository fileRepository, IDateTimeProvider dateTimeProvider)
+public class CreateServiceRequestUseCase(IUnitOfWork unitOfWorkMock, IFileProvider fileRepository, IDateTimeProvider dateTimeProvider)
 {
     public async Task<ServiceRequest> Create(CreateServiceRequestUseCaseCommand model)
     {

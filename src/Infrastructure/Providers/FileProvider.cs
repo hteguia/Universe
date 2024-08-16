@@ -1,15 +1,14 @@
 ﻿using System.IO.Abstractions;
- 
-using Domain.Contracts;
+using Domain.Interfaces.Providers;
 
-namespace Infrastructure.Contracts;
+namespace Infrastructure.Providers;
 
-public class FileRepository : IFileRepository
+public class FileProvider : IFileProvider
 {
     public readonly IFileSystem _fileSystem;
     private const string _folder = @"c:\demo";
-    
-    public FileRepository(IFileSystem fileSystem)
+
+    public FileProvider(IFileSystem fileSystem)
     {
         _fileSystem = fileSystem;
     }

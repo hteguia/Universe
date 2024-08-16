@@ -25,7 +25,7 @@ public class ServiceRequestEndPointsTests
         {
             { new StringContent(name), "Name" },
             { new StringContent("7 Jours"), "DeadLine" },
-            { new StringContent("1"), "DocumentTypeId" }
+           { new StringContent("1"), "DocumentTypeId" }
         };
         var fileContent = new StreamContent(file.OpenReadStream());
         fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("multipart/form-data");

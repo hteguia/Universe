@@ -2,7 +2,7 @@ using System.IO.Abstractions;
 using System.Reflection;
 using Api.Extensions;
 using Domain.Contracts;
-using Domain.Features.DocumentTemplates;
+using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Repositories.Base;
 using Infrastructure.Contracts;
@@ -28,6 +28,7 @@ builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
 builder.Services.AddScoped<IDocumentTemplateRepository, DocumentTemplateRepository>();
 builder.Services.AddScoped(typeof(IAsyncRepository<>), typeof(RepositoryBase<>));
+builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
 var app = builder.Build();
 

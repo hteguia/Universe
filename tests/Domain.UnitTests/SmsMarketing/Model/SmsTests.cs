@@ -11,7 +11,7 @@ public class SmsTests
     public SmsTests()
     {
         _dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        _dateTimeProviderMock.Setup(p => p.UtcNow()).Returns(new DateTime(2024, 12, 31));
+        _dateTimeProviderMock.Setup(p => p.UtcNow).Returns(new DateTime(2024, 12, 31));
     }
     
     [Fact]
@@ -21,10 +21,10 @@ public class SmsTests
         const string phoneNumber = "237679799607";
         const string senderName = "BMR-AFRICA";
         const string message = "Hello";
-        DateTime currentDate = _dateTimeProviderMock.Object.UtcNow();
+        DateTime currentDate = _dateTimeProviderMock.Object.UtcNow;
         
         //Act
-        var sms = new Sms(phoneNumber, senderName, message,  _dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms(phoneNumber, senderName, message,  _dateTimeProviderMock.Object.UtcNow);
 
         // Assert
         string expectedSnapshot =  $"PhoneNumber: {phoneNumber}, " +
@@ -45,10 +45,10 @@ public class SmsTests
         const string phoneNumber = "237679799607";
         const string senderName = "BMR-AFRICA";
         const string message = "Hello";
-        DateTime currentDate = _dateTimeProviderMock.Object.UtcNow();
+        DateTime currentDate = _dateTimeProviderMock.Object.UtcNow;
         
         //Act
-        var sms = new Sms(phoneNumber, senderName, message, new DateTime(2025, 12, 31), _dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms(phoneNumber, senderName, message, new DateTime(2025, 12, 31), _dateTimeProviderMock.Object.UtcNow);
 
         // Assert
         string expectedSnapshot =  $"PhoneNumber: {phoneNumber}, " +
@@ -66,10 +66,10 @@ public class SmsTests
     public void Sms_Send_ShouldSendSms()
     {
         // Arrange
-        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow);
         
         //Act
-        sms.Send(_dateTimeProviderMock.Object.UtcNow());
+        sms.Send(_dateTimeProviderMock.Object.UtcNow);
         
         //Assert
         string expectedSnapshot =  $"PhoneNumber: 237679799607, " +
@@ -87,11 +87,11 @@ public class SmsTests
     public void Sms_Send_ShouldThrowInvalidOperationException_WhenSmsIsAlreadySent()
     {
         // Arrange
-        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow());
-        sms.Send(_dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow);
+        sms.Send(_dateTimeProviderMock.Object.UtcNow);
         
         //Act
-        var act = () => sms.Send(_dateTimeProviderMock.Object.UtcNow());
+        var act = () => sms.Send(_dateTimeProviderMock.Object.UtcNow);
         
         //Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("Sms is already sent");
@@ -101,10 +101,10 @@ public class SmsTests
     public void Sms_Send_ShouldThrowInvalidOperationException_WhenSmsIsScheduledForLater()
     {
         // Arrange
-        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", new DateTime(2025, 12, 31), _dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", new DateTime(2025, 12, 31), _dateTimeProviderMock.Object.UtcNow);
         
         //Act
-        var act = () => sms.Send(_dateTimeProviderMock.Object.UtcNow());
+        var act = () => sms.Send(_dateTimeProviderMock.Object.UtcNow);
         
         //Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("Sms is scheduled for later");
@@ -114,8 +114,8 @@ public class SmsTests
     public void Sms_Resend_ShouldResendSms()
     {
         // Arrange
-        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow());
-        sms.Send(_dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow);
+        sms.Send(_dateTimeProviderMock.Object.UtcNow);
         
         //Act
         sms.Resend();
@@ -136,7 +136,7 @@ public class SmsTests
     public void Sms_Resend_ShouldThrowInvalidOperationException_WhenSmsIsNotSentYet()
     {
         // Arrange
-        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow());
+        var sms = new Sms("237679799607", "BMR-AFRICA", "Hello", _dateTimeProviderMock.Object.UtcNow);
         
         //Act
         var act = () => sms.Resend();

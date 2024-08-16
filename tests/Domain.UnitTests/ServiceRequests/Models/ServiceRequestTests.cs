@@ -1,22 +1,32 @@
 ﻿using Domain.Features.ServiceRequests.Entities;
+using Domain.Interfaces;
 using FluentAssertions;
+using Moq;
 
 namespace Domain.UnitTests.ServiceRequests.Models;
 
 public class ServiceRequestTests
 {
+    private readonly Mock<IDateTimeProvider> _dateTimeProviderMock;
+
+    public ServiceRequestTests()
+    {
+        _dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        _dateTimeProviderMock.Setup(p => p.UtcNow).Returns(new DateTime(2024, 12, 31));
+    }
+
     [Fact]
     public void ServiceRequest_WithValidData_ShouldCreateServiceRequest()
     {
         //Act
-        var serviceRequest = new ServiceRequest("C:\\Document de thèse.pdf", "7 Jours", 1);
+        var serviceRequest = new ServiceRequest("C:\\Document de thèse.pdf", "7 Jours", 1, _dateTimeProviderMock.Object.UtcNow);
 
         
         //Assert
         serviceRequest.Path.Should().Be("C:\\Document de thèse.pdf");
         serviceRequest.DeadLine.Should().Be("7 Jours");
         serviceRequest.DocumentTypeId.Should().Be(1);
-        serviceRequest.CreateAt.Should().NotBe(default);
+        serviceRequest.CreateAt.Should().Be(new DateTime(2024, 12, 31));
         serviceRequest.ServiceRequestStatuses.Should().NotBeNull();
         serviceRequest.ServiceRequestStatuses.First().Status.Should().Be(Domain.ServiceRequests.Enums.Status.WAITING_FOR_TREATMENT);
     }
@@ -25,7 +35,7 @@ public class ServiceRequestTests
     public void ServiceRequest_WithEmptyPath_ShouldThrowArgumentException()
     {
         //Act
-        var act = () => new ServiceRequest(string.Empty, "7 Jours", 1);
+        var act = () => new ServiceRequest(string.Empty, "7 Jours", 1, _dateTimeProviderMock.Object.UtcNow);
 
         //Assert
         act.Should().Throw<ArgumentException>().WithMessage("Path must not be null or empty");
@@ -35,7 +45,7 @@ public class ServiceRequestTests
     public void ServiceRequest_WithEmptyDeadLine_ShouldThrowArgumentException()
     {
         //Act
-        var act = () => new ServiceRequest("C:\\Document de thèse.pdf", string.Empty, 1);
+        var act = () => new ServiceRequest("C:\\Document de thèse.pdf", string.Empty, 1, _dateTimeProviderMock.Object.UtcNow);
 
         //Assert
         act.Should().Throw<ArgumentException>().WithMessage("DeadLine must not be null or empty");
@@ -45,7 +55,7 @@ public class ServiceRequestTests
     public void ServiceRequest_WithInvalidDocumentTypeId_ShouldThrowArgumentException()
     {
         //Act
-        var act = () => new ServiceRequest("C:\\Document de thèse.pdf", "7 Jours", 0);
+        var act = () => new ServiceRequest("C:\\Document de thèse.pdf", "7 Jours", 0, _dateTimeProviderMock.Object.UtcNow);
 
         //Assert
         act.Should().Throw<ArgumentException>().WithMessage("DocumentTypeId must be greater than 0");

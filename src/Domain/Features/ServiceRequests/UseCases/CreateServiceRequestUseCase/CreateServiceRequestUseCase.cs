@@ -1,11 +1,12 @@
 ﻿using Domain.Contracts;
 using Domain.Exceptions;
 using Domain.Features.ServiceRequests.Entities;
+using Domain.Interfaces;
 using Domain.Interfaces.Repositories.Base;
 
 namespace Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
 
-public class CreateServiceRequestUseCase(IUnitOfWork unitOfWorkMock, IFileRepository fileRepository)
+public class CreateServiceRequestUseCase(IUnitOfWork unitOfWorkMock, IFileRepository fileRepository, IDateTimeProvider dateTimeProvider)
 {
     public async Task<ServiceRequest> Create(CreateServiceRequestUseCaseCommand model)
     {
@@ -18,7 +19,7 @@ public class CreateServiceRequestUseCase(IUnitOfWork unitOfWorkMock, IFileReposi
             throw new ValidationException(validationResut);
         }     
         var path = fileRepository.SaveFile(model.Name, model.FileContent);
-        var serviceRequest = new ServiceRequest(path, model.DeadLine, model.DocumentTypeId);
+        var serviceRequest = new ServiceRequest(path, model.DeadLine, model.DocumentTypeId, dateTimeProvider.UtcNow);
 
         await repository.AddAsync(serviceRequest);
         await unitOfWorkMock.SaveChangesAsync();

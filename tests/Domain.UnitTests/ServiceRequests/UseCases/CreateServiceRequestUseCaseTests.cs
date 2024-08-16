@@ -4,6 +4,7 @@ using Domain.Features.DocumentTypes.Models;
 using Domain.Features.ServiceRequests;
 using Domain.Features.ServiceRequests.Entities;
 using Domain.Features.ServiceRequests.UseCases.CreateServiceRequestUseCase;
+using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Repositories.Base;
 using Domain.ServiceRequests.Enums;
@@ -19,18 +20,22 @@ public class CreateServiceRequestUseCaseTests
     private readonly Mock<IServiceRequestRepository> _serviceRequestRepositoryMock;
     private readonly Mock<IFileRepository> _fileRepositoryMock;
     private readonly Mock<IDocumentTypeRepository> _documentRepositoryMock;
-    
+    private readonly Mock<IDateTimeProvider> _dateTimeProviderMock;
+    private readonly DateTime CurrentDate = new(2024, 12, 31);
+
     public CreateServiceRequestUseCaseTests()
     {
         _fileRepositoryMock = new Mock<IFileRepository>();
         _serviceRequestRepositoryMock = new Mock<IServiceRequestRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _documentRepositoryMock = new Mock<IDocumentTypeRepository>();
-        
+        _dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        _dateTimeProviderMock.Setup(p => p.UtcNow).Returns(CurrentDate);
+
         _unitOfWorkMock.Setup(p => p.AsyncRepository<ServiceRequest>()).Returns(_serviceRequestRepositoryMock.Object);
         _unitOfWorkMock.Setup(p => p.DocumentTypeRepository).Returns(_documentRepositoryMock.Object);
         
-        _createServiceRequestUseCase = new CreateServiceRequestUseCase(_unitOfWorkMock.Object, _fileRepositoryMock.Object);
+        _createServiceRequestUseCase = new CreateServiceRequestUseCase(_unitOfWorkMock.Object, _fileRepositoryMock.Object, _dateTimeProviderMock.Object);
     }
 
     [Fact]
@@ -52,7 +57,7 @@ public class CreateServiceRequestUseCaseTests
         serviceRequest.DocumentTypeId.Should().Be(1);
         serviceRequest.ServiceRequestStatuses.First().Status.Should().Be(Status.WAITING_FOR_TREATMENT);
         serviceRequest.DeadLine.Should().Be("7 Jours");
-        serviceRequest.CreateAt.Should().NotBe(default); 
+        serviceRequest.CreateAt.Should().Be(CurrentDate); 
         serviceRequest.Path.Should().NotBeNullOrEmpty();
     }
     

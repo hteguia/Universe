@@ -1,4 +1,5 @@
-﻿using Domain.Base;
+﻿using System.Security;
+using Domain.Base;
 using Domain.Features.DocumentTypes.Models;
 using Domain.ServiceRequests.Enums;
 
@@ -20,12 +21,12 @@ public class ServiceRequest : BaseEntity
         ServiceRequestStatuses = [new ServiceRequestStatus(this, Status.WAITING_FOR_TREATMENT)];
     }
 
-    public ServiceRequest(string path, string deadLine, long documentTypeId) : this()
+    public ServiceRequest(string path, string deadLine, long documentTypeId, DateTime currentDate) : this()
     {
-        this.Update(path, deadLine, documentTypeId);
+        this.Update(path, deadLine, documentTypeId, currentDate);
     }
 
-    private void Update(string path, string deadLine, long documentTypeId)
+    private void Update(string path, string deadLine, long documentTypeId, DateTime currentDate)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -45,5 +46,6 @@ public class ServiceRequest : BaseEntity
         Path = path;
         DeadLine = deadLine;
         DocumentTypeId = documentTypeId;
+        CreateAt = currentDate;
     }
 }

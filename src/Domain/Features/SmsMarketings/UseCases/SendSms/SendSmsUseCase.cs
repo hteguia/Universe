@@ -10,9 +10,9 @@ public class SendSmsUseCase(IUnitOfWork unitOfWork, ISmsProvider smsProvider, ID
     public async Task Send(SendSmsUseCaseCommand command)
     {
         var repository = unitOfWork.AsyncRepository<Sms>();
-        var sms = new Sms(command.PhoneNumber, command.SenderName, command.Message, dateTimeProvider.UtcNow());
+        var sms = new Sms(command.PhoneNumber, command.SenderName, command.Message, dateTimeProvider.UtcNow);
         await smsProvider.Send(command.PhoneNumber, command.Message);
-        sms.Send(dateTimeProvider.UtcNow());
+        sms.Send(dateTimeProvider.UtcNow);
         await repository.AddAsync(sms);
         await unitOfWork.SaveChangesAsync();
     }

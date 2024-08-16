@@ -365,3 +365,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /.sonarqube/conf
 /src/Api/.config
+/src/Api/Properties/serviceDependencies.json
+/src/Api/Properties/serviceDependencies.local.json
